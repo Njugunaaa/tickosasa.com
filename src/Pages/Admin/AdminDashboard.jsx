@@ -6,8 +6,8 @@ const AdminDashboard = () => {
     <>
     <div className='row'>
       <div className='sidebar col-3'>
-        <Link to="users">Users</Link><br />
-        <Link to="add-events">Add Events</Link>
+        <Link to="AdminShows">Admin Shows</Link><br />
+        <Link to="AddEvent">Add Events</Link>
       </div>
       <div className='main col-8'></div>
       <  Outlet/>

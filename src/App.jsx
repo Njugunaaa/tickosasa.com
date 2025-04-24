@@ -4,7 +4,7 @@ import NavBar from "./components/NavBar";
 import Login from "./Pages/Auth/Login";
 import Admin from "./Pages/Admin/AdminDashboard";
 import UserDashBoard from "./Pages/User/UserDashBoard";
-import Users from "./Pages/Admin/Users";
+import AdminShows from "./Pages/Admin/AdminShows";
 import AddEvent from "./Pages/Admin/AddEvent";
 import TicketsBought from "./Pages/User/TicketsBought";
 import Shows from "./components/Shows";
@@ -13,9 +13,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import ShowEvent from "./components/Show-Event";
 function App() {
-  const [booking, setBooking] = useState([]);
-  const [shows, setShows] = useState([]);
-  const [showPage, setShowPage] = useState(null);
+  const [booking, setBooking] = useState([])
+  const [shows, setShows] = useState([])
+  const [showPage, setShowPage] = useState(null)
   
 
   useEffect(() => {
@@ -35,18 +35,31 @@ function App() {
         toast.error("You Have already bookedde!!!");
         return newBooking;
       }
-    });
-  };
+    })
+  }
   const Unbooking = (unbook) => {
     setBooking(booking.filter((ticket) => ticket.id !== unbook.id));
     toast.success(`${unbook.name}has been unboked successfully`);
-  };
+  }
   const handleShowClick = (show) => {
     setShowPage(show);
-  };
+  }
   const returnBack = () => {
     setShowPage(null);
-  };
+  }
+  const killEvent = (xshow) => {
+    fetch(`http://localhost:3000/shows/${xshow.id}`, {
+      method: "DELETE",
+    }).then((res) => {
+      if (res.ok) {
+        const updatedShows = shows.filter((show) => show.id !== xshow.id)
+        setShows(updatedShows)
+        toast.success(`${xshow.name} has been DEleted successfully `)
+      } else {
+        toast.error("Deletion was unsuccessful")
+      }
+    })
+  }
   return (
     <>
       <ToastContainer />
@@ -60,8 +73,8 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login />}></Route>
               <Route path="/admin" element={<Admin />}>
-                <Route path="users" element={<Users />} />
-                <Route path="add-event" element={<AddEvent />} />
+                <Route path="AdminShows" element={<AdminShows shows={shows} killEvent={killEvent} />} />
+                <Route path="AddEvent" element={<AddEvent />} />
               </Route>
               <Route path="/user" element={<UserDashBoard />}>
                 <Route

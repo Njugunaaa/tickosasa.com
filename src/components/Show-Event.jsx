@@ -1,12 +1,14 @@
 import React from "react";
 
-const ShowEvent = ({handleBooking, returnBack, show}) => {
+const ShowEvent = ({ handleBooking, returnBack, show }) => {
   return (
     <div>
       <h1 className="text-2xl font-bold p-4">Make a Booking Now</h1>
       <h1 className="text-xl font-bold p-4">{show.name}</h1>
       <div>
-        <button onClick={()=>returnBack()} className="color-black">&#8678;</button>
+        <button onClick={() => returnBack()} className="color-black">
+          &#8678;
+        </button>
         <img
           src={show.poster}
           alt={show.name}
@@ -54,17 +56,19 @@ const ShowEvent = ({handleBooking, returnBack, show}) => {
             Email
           </label>
           <input type="text" />
+          <br />
 
           <select
             name="Ticket"
             required
-            className="border border-gray-300 rounded px-3 py-2 mb-2"
+            className="rounded border border-gray-300 rounded px-3 py-2 mb-2"
           >
             <option value=""> </option>
             <option value="regular">Regular</option>
             <option value="vip">Vip</option>
             <option value="vvip">Vvip</option>
           </select>
+          <br />
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             onClick={() => handleBooking(show)}

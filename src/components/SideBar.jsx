@@ -8,6 +8,11 @@ const Sidebar = () => {
       <h1 className="text-lg  text-green-400"><em>Your Ticket to Every Moment.</em></h1><br />
 
       <div className="flex flex-col space-y-4">
+      <Link
+          to="/login"
+       >
+         Log In 🔐
+        </Link><br />
         <Link
           to="/admin"
        >
