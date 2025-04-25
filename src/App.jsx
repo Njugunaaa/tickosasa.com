@@ -16,17 +16,28 @@ function App() {
   const [booking, setBooking] = useState([])
   const [shows, setShows] = useState([])
   const [showPage, setShowPage] = useState(null)
-  const [ascending, setAscending] =useState(true)
-  const [searchTerm,setSearchTErm]=useState('')
-  // still under improvements both on authentication and rerouting but will be revisited often
+  const [sortConfig, setSortConfig] = useState({ key: "", direction: "asc" })
+  const [searchTerm, setSearchTErm] = useState('')
+
+  const jsonBinUrl = "https://api.jsonbin.io/v3/b/680b37678960c979a58cba14"
+  const jsonBinMasterKey = "$2a$10$xSp4u1Y3iLb5bmRCQyG4WOtKRJELsKS3BAzd7O72PJcpOhtlNVrji"
 
   useEffect(() => {
-    fetch("http://localhost:3000/shows")
+    fetch(jsonBinUrl, {
+      headers: {
+        "X-Master-Key": jsonBinMasterKey
+      }
+    })
       .then((res) => res.json())
       .then((data) => {
-        setShows(data)
+        console.log("Fetched data from JSONBin:", data);
+        if (data && data.record) {
+          setShows(data.record.shows)
+        }
       })
+      .catch(() => toast.error("Failed to load shows from JSONBin"))
   }, [])
+
   const handleBooking = (book) => {
     setBooking((newBooking) => {
       const booked = newBooking.find((ticket) => ticket.id === book.id)
@@ -39,61 +50,92 @@ function App() {
       }
     })
   }
+
   const Unbooking = (unbook) => {
     setBooking(booking.filter((ticket) => ticket.id !== unbook.id))
     toast.success(`${unbook.name} has been unboked successfully`)
   }
+
   const handleShowClick = (show) => {
     setShowPage(show)
   }
-  const filteredShows=shows.filter((show)=>{
-    return show.name.toLowerCase().includes(searchTerm.toLowerCase())
+
+  const filteredShows = Array.isArray(shows)
+  ? shows.filter((show) => {
+      return show.name?.toLowerCase().includes(searchTerm.toLowerCase());
     })
+  : [];
+
+
   const returnBack = () => {
     setShowPage(null)
   }
+
   const killEvent = (xshow) => {
-    fetch(`http://localhost:3000/shows/${xshow.id}`, {
-      method: "DELETE",
-    }).then((res) => {
-      if (res.ok) {
-        const updatedShows = shows.filter((show) => show.id !== xshow.id)
-        setShows(updatedShows)
-        toast.success(`${xshow.name} has been DEleted successfully `)
-      } else {
-        toast.error("Deletion was unsuccessful")
-      }
-    })
-  }
-  const newEvent = (eventData) => {
-    fetch("http://localhost:3000/shows", {
-      method: "POST",
+    const updated = shows.filter((show) => show.id !== xshow.id)
+
+    fetch(jsonBinUrl, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "X-Master-Key": jsonBinMasterKey
       },
-      body: JSON.stringify(eventData),
+      body: JSON.stringify(updated)
     })
       .then((res) => {
-        if (!res.ok){toast.error("Failed to post event")
-        return res.json()}
+        if (!res.ok) throw new Error("Failed to delete")
+        return res.json()
       })
-      .then((newEvent) => {
-        setShows((prev) => [...prev, newEvent])
+      .then(() => {
+        setShows(updated)
+        toast.success(`${xshow.name} has been deleted successfully`)
+      })
+      .catch(() => toast.error("Deletion was unsuccessful"))
+  }
+
+  const newEvent = (eventData) => {
+    const updated = [...shows, eventData]
+
+    fetch(jsonBinUrl, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Master-Key": jsonBinMasterKey
+      },
+      body: JSON.stringify(updated)
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to update")
+        return res.json()
+      })
+      .then(() => {
+        setShows(updated)
         toast.success("Event added successfully!")
       })
       .catch(() => {
         toast.error("There was an error adding the event.")
       })
   }
-  
+
   const sortBy = (key) => {
+    let direction = "asc"
+  
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc"
+    }
+  
     const sortedData = [...shows].sort((a, b) => {
-     const answer= a[key].toLowerCase().localeCompare(b[key].toLowerCase())
-     return ascending ?answer:-answer
+      const aVal = a[key]?.toLowerCase?.() || ""
+      const bVal = b[key]?.toLowerCase?.() || ""
+  
+      const comparison = aVal.localeCompare(bVal)
+      return direction === "asc" ? comparison : -comparison
     })
+  
+    setSortConfig({ key, direction })
     setShows(sortedData)
-    setAscending(!ascending)
   }
+
   return (
     <> 
       <ToastContainer />

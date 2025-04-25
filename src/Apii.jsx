@@ -12,7 +12,7 @@ import Sidebar from "./components/SideBar";
 import "react-toastify/dist/ReactToastify.css"
 import { ToastContainer, toast } from "react-toastify"
 import ShowEvent from "./components/Show-Event";
-function Api() {
+function App() {
   const [booking, setBooking] = useState([])
   const [shows, setShows] = useState([])
   const [showPage, setShowPage] = useState(null)
@@ -21,7 +21,7 @@ function Api() {
   // still under improvements both on authentication and rerouting but will be revisited often
 
   useEffect(() => {
-    fetch("https://my.api.mockaroo.com/shows.json?key=d252a320")
+    fetch("http://localhost:3000/shows")
       .then((res) => res.json())
       .then((data) => {
         setShows(data)
@@ -53,7 +53,7 @@ function Api() {
     setShowPage(null)
   }
   const killEvent = (xshow) => {
-    fetch(`hhttps://my.api.mockaroo.com/shows.json?key=d252a320/${xshow.id}`, {
+    fetch(`http://localhost:3000/shows/${xshow.id}`, {
       method: "DELETE",
     }).then((res) => {
       if (res.ok) {
@@ -66,7 +66,7 @@ function Api() {
     })
   }
   const newEvent = (eventData) => {
-    fetch("https://my.api.mockaroo.com/shows.json?key=d252a320", {
+    fetch("http://localhost:3000/shows", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -147,4 +147,4 @@ function Api() {
   )
 }
 
-export default Api
+export default App
