@@ -16,7 +16,7 @@ function App() {
   const [booking, setBooking] = useState([])
   const [shows, setShows] = useState([])
   const [showPage, setShowPage] = useState(null)
-  const [sortConfig, setSortConfig] = useState({ key: "", direction: "asc" })
+ const [sortConfig, setSortConfig] = useState({ key: "", direction: "asc" })
   const [searchTerm, setSearchTErm] = useState('')
 
   const jsonBinUrl = "https://api.jsonbin.io/v3/b/680b37678960c979a58cba14"
@@ -31,8 +31,8 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched data from JSONBin:", data);
-        if (data && data.record) {
-          setShows(data.record.shows)
+        if (data && Array.isArray(data.record)) {
+          setShows(data.record)
         }
       })
       .catch(() => toast.error("Failed to load shows from JSONBin"))
