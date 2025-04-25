@@ -1,9 +1,9 @@
 ## TICKOSASA.COM
 GICHUHI JOSHUA NJUGUNA
-## MORINGA PHASE 2 React PROJECT Week 1
+## MORINGA PHASE 2 React PROJECT 
 ## Vercel Deployment Link:[ [https://njugunaaa.github.io/cross-Gaming-Arena/ ](https://expense-tracker-omega-five-50.vercel.app/)](https://tickosasa-com.vercel.app/)
 ## A TICKET PURCHASING APPLICATION
-=> This application allows users to book tickets and unbook ticketssort them and filter by search according to their specific names.
+=> This application allows users to book tickets and unbook tickets sort them and filter by search according to their specific names.
 
 
 ## Technologies used
