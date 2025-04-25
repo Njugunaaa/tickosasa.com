@@ -5,7 +5,7 @@ const Shows = ({filteredShows, handleShowClick,handleSort,searchTerm, setSearchT
     <>
       <h2 className="text-2xl font-bold p-4">Tickets On Sale</h2>
       <div className="p-4">
-        <input type="text" className="w-30 px-3, border, rounded-md text-lg text-bold w-full text-green-500 bg-gray-300" placeholder="Searchh" value={searchTerm} onChange={(e)=>setSearchTErm(e.target.value)}/>
+        <input type="text" className="w-30 px-3, border, rounded-md text-lg text-bold w-full text-green-500 bg-gray-300" placeholder="Search" value={searchTerm} onChange={(e)=>setSearchTErm(e.target.value)}/>
       </div>
       <div className="p-4">
         <label htmlFor="sort" className="mr-2 font-semibold">Sort by:</label>
