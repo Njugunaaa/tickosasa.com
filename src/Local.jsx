@@ -16,8 +16,8 @@ function App() {
   const [booking, setBooking] = useState([])
   const [shows, setShows] = useState([])
   const [showPage, setShowPage] = useState(null)
-  const [ascending, setAscending] =useState(true)
-  const [searchTerm,setSearchTErm]=useState('')
+  const [ascending, setAscending] = useState(true)
+  const [searchTerm, setSearchTErm] = useState("")
   // still under improvements both on authentication and rerouting but will be revisited often
 
   useEffect(() => {
@@ -46,9 +46,9 @@ function App() {
   const handleShowClick = (show) => {
     setShowPage(show)
   }
-  const filteredShows=shows.filter((show)=>{
+  const filteredShows = shows.filter((show) => {
     return show.name.toLowerCase().includes(searchTerm.toLowerCase())
-    })
+  })
   const returnBack = () => {
     setShowPage(null)
   }
@@ -74,8 +74,10 @@ function App() {
       body: JSON.stringify(eventData),
     })
       .then((res) => {
-        if (!res.ok){toast.error("Failed to post event")
-        return res.json()}
+        if (!res.ok) {
+          toast.error("Failed to post event")
+          return res.json()
+        }
       })
       .then((newEvent) => {
         setShows((prev) => [...prev, newEvent])
@@ -85,17 +87,17 @@ function App() {
         toast.error("There was an error adding the event.")
       })
   }
-  
+
   const sortBy = (key) => {
     const sortedData = [...shows].sort((a, b) => {
-     const answer= a[key].toLowerCase().localeCompare(b[key].toLowerCase())
-     return ascending ?answer:-answer
+      const answer = a[key].toLowerCase().localeCompare(b[key].toLowerCase())
+      return ascending ? answer : -answer
     })
     setShows(sortedData)
     setAscending(!ascending)
   }
   return (
-    <> 
+    <>
       <ToastContainer />
       <div className="flex min-h-screen">
         <div className="w-64 bg-gray-100 shadow-md">
@@ -107,8 +109,14 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login />}></Route>
               <Route path="/admin" element={<Admin />}>
-                <Route path="AdminShows" element={<AdminShows shows={shows} killEvent={killEvent} />} />
-                <Route path="AddEvent" element={<AddEvent newEvent={newEvent} />} />
+                <Route
+                  path="AdminShows"
+                  element={<AdminShows shows={shows} killEvent={killEvent} />}
+                />
+                <Route
+                  path="AddEvent"
+                  element={<AddEvent newEvent={newEvent} />}
+                />
               </Route>
               <Route path="/user" element={<UserDashBoard />}>
                 <Route
@@ -130,7 +138,6 @@ function App() {
                   returnBack={returnBack}
                 />
               ) : (
-                
                 <Shows
                   handleShowClick={handleShowClick}
                   searchTerm={searchTerm}
