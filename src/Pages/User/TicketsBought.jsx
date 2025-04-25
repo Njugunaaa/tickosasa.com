@@ -20,6 +20,8 @@ const TicketsBought = ({ booking, handleUnbooking }) => {
               <p className="text-lg font-semibold">{show.name}</p>
               <p className="text-sm text-gray-600">{show.time}</p>
               <p className="text-sm text-gray-600">Venue: {show.venue}</p>
+              {/* working progress cause cant display the ticket type bought but to be continued */}
+              <p className="text-sm text-gray-600">{show.ticket}</p>
 
               <button onClick={() => handleUnbooking(show)}>Unbook Now </button>
             </div>

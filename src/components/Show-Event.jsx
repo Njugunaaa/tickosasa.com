@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 const ShowEvent = ({ handleBooking, returnBack, show }) => {
   return (
@@ -19,7 +19,8 @@ const ShowEvent = ({ handleBooking, returnBack, show }) => {
           <p className="text-sm text-gray-600">{show.time}</p>
           <p className="text-sm text-gray-600">Venue: {show.venue}</p>
           <p className="text-sm text-white">{show.description}</p>
-          <br />
+          <p className="text-sm text-white">{show.country}</p>
+
           <p className="text-sm text-red-800">
             Regular: KES {show.tickets.regular.price} <br /> Tickets Left:
             {show.tickets.regular.remaining}
@@ -38,8 +39,8 @@ const ShowEvent = ({ handleBooking, returnBack, show }) => {
         <form
           action="submit"
           onSubmit={(e) => {
-            e.preventDefault();
-            handleBooking(show);
+            e.preventDefault()
+            handleBooking(show)
           }}
         >
           <label
@@ -63,10 +64,10 @@ const ShowEvent = ({ handleBooking, returnBack, show }) => {
             required
             className="rounded border border-gray-300 rounded px-3 py-2 mb-2"
           >
-            <option value=""> </option>
-            <option value="regular">Regular</option>
-            <option value="vip">Vip</option>
-            <option value="vvip">Vvip</option>
+            <option value="" name="ticket"> </option>
+            <option value="regular" name="ticket">Regular</option>
+            <option value="vip" name="ticket">Vip</option>
+            <option value="vvip" name="ticket">Vvip</option>
           </select>
           <br />
           <button
@@ -79,7 +80,7 @@ const ShowEvent = ({ handleBooking, returnBack, show }) => {
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ShowEvent;
+export default ShowEvent

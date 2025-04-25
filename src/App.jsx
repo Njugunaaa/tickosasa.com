@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useState, useEffect } from "react"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import NavBar from "./components/NavBar";
 import Login from "./Pages/Auth/Login";
 import Admin from "./Pages/Admin/AdminDashboard";
@@ -9,43 +9,48 @@ import AddEvent from "./Pages/Admin/AddEvent";
 import TicketsBought from "./Pages/User/TicketsBought";
 import Shows from "./components/Shows";
 import Sidebar from "./components/SideBar";
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
+import { ToastContainer, toast } from "react-toastify"
 import ShowEvent from "./components/Show-Event";
 function App() {
   const [booking, setBooking] = useState([])
   const [shows, setShows] = useState([])
   const [showPage, setShowPage] = useState(null)
-  
+  const [ascending, setAscending] =useState(true)
+  const [searchTerm,setSearchTErm]=useState('')
+  // still under improvements both on authentication and rerouting but will be revisited often
 
   useEffect(() => {
     fetch("http://localhost:3000/shows")
       .then((res) => res.json())
       .then((data) => {
-        setShows(data);
-      });
-  }, []);
+        setShows(data)
+      })
+  }, [])
   const handleBooking = (book) => {
     setBooking((newBooking) => {
-      const booked = newBooking.find((ticket) => ticket.id === book.id);
+      const booked = newBooking.find((ticket) => ticket.id === book.id)
       if (!booked) {
-        toast.success("You Have Successfully Booked !!!");
-        return [...newBooking, book];
+        toast.success(`You Have Successfully Booked ${book.name}!!!`)
+        return [...newBooking, book]
       } else {
-        toast.error("You Have already bookedde!!!");
-        return newBooking;
+        toast.error("You Have already bookedd!!!")
+        return newBooking
       }
     })
   }
   const Unbooking = (unbook) => {
-    setBooking(booking.filter((ticket) => ticket.id !== unbook.id));
-    toast.success(`${unbook.name}has been unboked successfully`);
+    setBooking(booking.filter((ticket) => ticket.id !== unbook.id))
+    toast.success(`${unbook.name} has been unboked successfully`)
   }
   const handleShowClick = (show) => {
-    setShowPage(show);
+    setShowPage(show)
   }
+  const filteredShows=shows.filter((show)=>{
+    return show.name.toLowerCase().includes(searchTerm.toLowerCase())
+    })
   const returnBack = () => {
-    setShowPage(null);
+    setShowPage(null)
   }
   const killEvent = (xshow) => {
     fetch(`http://localhost:3000/shows/${xshow.id}`, {
@@ -60,8 +65,37 @@ function App() {
       }
     })
   }
+  const newEvent = (eventData) => {
+    fetch("http://localhost:3000/shows", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(eventData),
+    })
+      .then((res) => {
+        if (!res.ok){toast.error("Failed to post event")
+        return res.json()}
+      })
+      .then((newEvent) => {
+        setShows((prev) => [...prev, newEvent])
+        toast.success("Event added successfully!")
+      })
+      .catch(() => {
+        toast.error("There was an error adding the event.")
+      })
+  }
+  
+  const sortBy = (key) => {
+    const sortedData = [...shows].sort((a, b) => {
+     const answer= a[key].toLowerCase().localeCompare(b[key].toLowerCase())
+     return ascending ?answer:-answer
+    })
+    setShows(sortedData)
+    setAscending(!ascending)
+  }
   return (
-    <>
+    <> 
       <ToastContainer />
       <div className="flex min-h-screen">
         <div className="w-64 bg-gray-100 shadow-md">
@@ -74,7 +108,7 @@ function App() {
               <Route path="/login" element={<Login />}></Route>
               <Route path="/admin" element={<Admin />}>
                 <Route path="AdminShows" element={<AdminShows shows={shows} killEvent={killEvent} />} />
-                <Route path="AddEvent" element={<AddEvent />} />
+                <Route path="AddEvent" element={<AddEvent newEvent={newEvent} />} />
               </Route>
               <Route path="/user" element={<UserDashBoard />}>
                 <Route
@@ -96,9 +130,13 @@ function App() {
                   returnBack={returnBack}
                 />
               ) : (
+                
                 <Shows
-                  shows={shows}
                   handleShowClick={handleShowClick}
+                  searchTerm={searchTerm}
+                  setSearchTErm={setSearchTErm}
+                  handleSort={sortBy}
+                  filteredShows={filteredShows}
                 />
               )}
             </div>
@@ -106,7 +144,7 @@ function App() {
         </div>
       </div>
     </>
-  );
+  )
 }
 
-export default App;
+export default App

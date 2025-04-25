@@ -1,103 +1,161 @@
-import React from 'react'
-import { Outlet, Link } from 'react-router-dom'
-const AddEvent = () => {
+import React, { useState } from "react"
+import { toast } from "react-toastify"
+
+function AddEventForm({ newEvent }) {
+  const [eventName, setEventName] = useState("")
+  const [posterUrl, setPosterUrl] =useState("")
+  const [date, setDate] = useState("")
+  const [time, setTime] = useState("")
+  const [venue, setVenue] = useState("")
+  const [description, setDescription] = useState("")
+  const [regularPrice, setRegularPrice] = useState("")
+  const [regularTickets, setRegularTickets] = useState("")
+  const [vipPrice, setVipPrice] = useState("")
+  const [vipTickets, setVipTickets] = useState("")
+  const [vvipPrice, setVvipPrice] = useState("")
+  const [vvipTickets, setVvipTickets] = useState("")
+
   const handleSubmit = (e) => {
-    e.preventDefault();
-      
-  };
+    e.preventDefault()
+    if (
+      eventName && posterUrl && date && time && venue && description &&
+      regularPrice && regularTickets && vipPrice && vipTickets && vvipPrice &&
+      vvipTickets
+    ) {
+
+      const Event = {
+        name: eventName,
+        poster: posterUrl,
+        date,
+        time,
+        venue,
+        description,
+        country: "Kenya",
+        tickets: {
+          regular: { price: regularPrice, remaining: regularTickets },
+          vip: { price: vipPrice, remaining: vipTickets },
+          vvip: { price: vvipPrice, remaining: vvipTickets },
+        }
+      }
+      newEvent(Event)
+      toast.success("Event has be added successfully!")
+      setEventName("")
+    setPosterUrl("")
+    setDate("")
+    setTime("")
+    setVenue("")
+    setDescription("")
+    setRegularPrice("")
+    setRegularTickets("")
+    setVipPrice("")
+    setVipTickets("")
+    setVvipPrice("")
+    setVvipTickets("")
+    } else {
+      toast.error("You have not filled in all the details!!")
+    }
+  }
+
   return (
-    <div>
-      <div className="bg-black h-screen shadow-md rounded-lg p-6">
-      <form onSubmit={handleSubmit}className="flex max-w-md flex-col gap-4">
-          <h2 className="text-xl font-bold mb-2">Add Expense</h2>
-          <h4 className="text-gray-600 mb-4">Enter Event Name</h4>
-          <div>
-            <input
-              type="text"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-              placeholder="Enter Event Name"
+    <form
+      onSubmit={handleSubmit}
+      className="bg-blue-300 p-6 rounded shadow-lg text-white max-w-md mx-auto"
+    >
+      <h2 className="text-xl font-bold mb-4">Add New Event</h2>
 
-            />
-          </div>
-          <div>
-            <input
-              type="date"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+      <input
+        type="text"
+        placeholder="Event Name"
+        value={eventName}
+        onChange={(e) => setEventName(e.target.value)}
+        className="mb-2 p-2 w-full rounded text-white"
+      />
+      <input
+        type="text"
+        placeholder="Event PosterUrl"
+        value={posterUrl}
+        onChange={(e) => setPosterUrl(e.target.value)}
+        className="mb-2 p-2 w-full rounded text-white"
+      />
+      <input
+        type="date"
+        placeholder="Date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        className="mb-2 p-2 w-full rounded text-white"
+      />
+      <input
+        type="time"
+        placeholder="Time"
+        value={time}
+        onChange={(e) => setTime(e.target.value)}
+        className="mb-2 p-2 w-full rounded text-white"
+      />
+      <input
+        type="text"
+        placeholder="Venue"
+        value={venue}
+        onChange={(e) => setVenue(e.target.value)}
+        className="mb-2 p-2 w-full rounded text-white"
+      />
+      <input
+        type="text"
+        placeholder="Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        className="mb-2 p-2 w-full rounded text-white"
+      />
+      <input
+        type="text"
+        placeholder="Regular Ticket Price"
+        value={regularPrice}
+        onChange={(e) => setRegularPrice(e.target.value)}
+        className="mb-2 p-2 w-full rounded text-white"
+      />
+      <input
+        type="text"
+        placeholder="Regular Available Tickets"
+        value={regularTickets}
+        onChange={(e) => setRegularTickets(e.target.value)}
+        className="mb-2 p-2 w-full rounded text-white"
+      />
+      <input
+        type="text"
+        placeholder="VIP Ticket Price"
+        value={vipPrice}
+        onChange={(e) => setVipPrice(e.target.value)}
+        className="mb-2 p-2 w-full rounded text-white"
+      />
+      <input
+        type="text"
+        placeholder="VIP Available Tickets"
+        value={vipTickets}
+        onChange={(e) => setVipTickets(e.target.value)}
+        className="mb-2 p-2 w-full rounded text-white"
+      />
+      <input
+        type="text"
+        placeholder="VVIP Ticket Price"
+        value={vvipPrice}
+        onChange={(e) => setVvipPrice(e.target.value)}
+        className="mb-2 p-2 w-full rounded text-white"
+      />
+      <input
+        type="text"
+        placeholder="VVIP Available Tickets"
+        value={vvipTickets}
+        onChange={(e) => setVvipTickets(e.target.value)}
+        className="mb-4 p-2 w-full rounded text-white"
+      />
 
-              placeholder="Enter Event date"
-            />
-          </div>
-          <div>
-            <input
-              type="time"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-
-              placeholder="Enter Event time"
-            />
-          </div>
-          <div>
-            <input
-              type="text"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-              placeholder="Enter Event Venue"
-
-            />
-          </div>
-          <div>
-            <input
-              type="date"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-              placeholder="Enter Event description"
-            />
-          </div>
-          <div>
-            <input
-              type="text"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-              placeholder="Enter regular ticket price "
-            />
-            <input
-            type="text"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-            placeholder="Enter regular available tickets "
-          />
-          </div>
-          <div>
-            <input
-              type="text"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-              placeholder="Enter Vip ticket price "
-            />
-            <input
-            type="text"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-            placeholder="Enter Vip available tickets "
-          />
-          </div>
-           <div>
-            <input
-              type="text"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-              placeholder="Enter Vvip ticket price "
-            />
-            <input
-            type="text"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-            placeholder="Enter Vvip available tickets "
-          />
-          </div> 
-          
-
-          <button
-            type="submit"
-            className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-          ><Link to="UserDashBoard" className='text-white'>Submit</Link>
-          </button>
-        </form>
-        <  Outlet/>
-        </div>
-    </div>
+      <button
+        type="submit"
+        className="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded text-white"
+      >
+        Submit
+      </button>
+    </form>
   )
 }
 
-export default AddEvent
+export default AddEventForm
